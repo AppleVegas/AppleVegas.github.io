@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Строй|Выживай (FanBase)</title>
+  <script>
+</script>
+  <style>
+  @font-face { font-family: SFUI; src: url('SFUIb.ttf'); }
+    body {font-family: "SFUI"; text-align:  center; background-color: black;  position: relative; top: 30px; background-size: 100%; margin: 0px; overflow:hidden;}
+	load {border-radius: 50%; position: relative; top: 10px;}
+    h1 {font-size:2em; text-decoration: none; position: relative;}
+    kodi {font-family: "SFUI"; text-align:  center; margin: 0px;}
+    h2 {font-size:1em; color: #ffffff;  text-shadow: black 0px 0px 14px; position: relative;}
+    h3 {font-size:1.5em; color: #ffffff;  text-shadow: black 0px 0px 14px; position: relative; top: 50px; right: 1.5%;}
+}
+#container {
+  position:relative;
+}
+
+#container img {
+  position:absolute;
+  left:0;
+}
+
+@-webkit-keyframes imgFade {
+ 0% {
+   opacity:1;
+ }
+ 17% {
+   opacity:1;
+ }
+ 25% {
+   opacity:0;
+ }
+ 92% {
+   opacity:0;
+ }
+ 100% {
+   opacity:1;
+ }
+}
+
+@-moz-keyframes imgFade {
+ 0% {
+   opacity:1;
+ }
+ 17% {
+   opacity:1;
+ }
+ 25% {
+   opacity:0;
+ }
+ 92% {
+   opacity:0;
+ }
+ 100% {
+   opacity:1;
+ }
+}
+
+@-o-keyframes imgFade {
+ 0% {
+   opacity:1;
+ }
+ 17% {
+   opacity:1;
+ }
+ 25% {
+   opacity:0;
+ }
+ 92% {
+   opacity:0;
+ }
+ 100% {
+   opacity:1;
+ }
+}
+
+@keyframes imgFade {
+ 0% {
+   opacity:1;
+ }
+ 17% {
+   opacity:1;
+ }
+ 25% {
+   opacity:0;
+ }
+ 92% {
+   opacity:0;
+ }
+ 100% {
+   opacity:1;
+ }
+}
+
+#container img {
+  -webkit-animation-name: imgFade;
+  -webkit-animation-timing-function: ease-in-out;
+  -webkit-animation-iteration-count: infinite;
+  -webkit-animation-duration: 24s;
+
+  -moz-animation-name: imgFade;
+  -moz-animation-timing-function: ease-in-out;
+  -moz-animation-iteration-count: infinite;
+  -moz-animation-duration: 24s;
+
+  -o-animation-name: imgFade;
+  -o-animation-timing-function: ease-in-out;
+  -o-animation-iteration-count: infinite;
+  -o-animation-duration: 24s;
+
+  animation-name: imgFade;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  animation-duration: 24s;
+}
+#container img:nth-of-type(1) {
+  -webkit-animation-delay: 18s;
+  -moz-animation-delay: 18s;
+  -o-animation-delay: 18s;
+  animation-delay: 18s;
+}
+#container img:nth-of-type(2) {
+  -webkit-animation-delay: 12s;
+  -moz-animation-delay: 12s;
+  -o-animation-delay: 12s;
+  animation-delay: 12s;
+}
+#container img:nth-of-type(3) {
+  -webkit-animation-delay: 6s;
+  -moz-animation-delay: 6s;
+  -o-animation-delay: 6s;
+  animation-delay: 6s;
+}
+#container img:nth-of-type(4) {
+  -webkit-animation-delay: 0;
+  -moz-animation-delay: 0;
+  -o-animation-delay: 0;
+  animation-delay: 0;
+}
+</style>
+</head>
+<kodi>
+ <div id="container">
+    <img src="1j.jpg" style="top: -60px;">
+    <img src="2j.jpg" style="top: -60px;">
+    <img src="3j.jpg" style="top: -60px;">
+    <img src="4j.jpg"  style="top: -60px;">
+</div>
+<img src="server.jpg" width=10% height=10% onclick="window.location.href='https://vk.com/stroyvissivayfanbase'" style="border-radius: 50%; position: relative; top: 10px; box-shadow: black 0px 0px 25px;">
+</kodi>
+ <body>
+ <h1><a href="https://vk.com/stroyvissivayfanbase" style="color: #ffffff; text-decoration: none; text-shadow: black 0px 0px 25px;">Строй|Выживай (FanBase)</a></h1>
+<h2>Добро пожаловать на наш сервер! Мы надеемся тебе тут понравится!</h2>
+<h2>Пожалуйста, прочитай правила которые находятся в !motd, они помогут тебе избежать бан.</h2>
+<h2>Присоединяйся к Discord'у сервера! Просто введи в чате: !discord</h2>
+<h2>Ответы на всё непонятное есть в Discord'e и в группе ВКонтакте! Можно просто ввести в чат: !faq</h2>
+<h2>Отправляй жалобы в Discord или группу ВКонтакте! Через чат можно попасть в группу: !group</h2>
+<h2>Часто убивают а ты хочешь строить? Телепортируйся в билдзону: !build</h2>
+<h2>Не забывай про контент сервера! Он нужен чтобы небыло пропавших текстур и ERROR'ов: !content</h2>
+<img src="load.gif" width=2% height=2% style="border-radius: 50%; position: relative; top: 150px;">
+<iframe width="0" height="0" src="https://www.youtube.com/embed/qeMFqkcPYcg?rel=0&autoplay=1&loop=1" frameborder="0" style="width:0px; height:0px;"></iframe>
+<div id= "soundtrack"></div>
+</script>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3/jquery.min.js"></script>
+<script>
+function playSound() {
+  var sounds = new Array(
+    "https://www.youtube.com/embed/7wtfhZwyrcc?rel=0&autoplay=1&loop=1",
+    "https://www.youtube.com/embed/qeMFqkcPYcg?rel=0&autoplay=1&loop=1",
+    "https://www.youtube.com/embed/ktvTqknDobU?rel=0&autoplay=1&loop=1"
+    
+  );
+
+$("#soundtrack").html("<iframe src=\""+sounds[Math.floor(Math.random()*(sounds.length+1))]+"\" hidden=\"true\" autostart=\"true\" />");
+}
+</script>
+</body onload="javascript:playSound()">
+</html>
+
