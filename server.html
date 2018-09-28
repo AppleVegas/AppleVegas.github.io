@@ -178,6 +178,7 @@
           height: '0',
           width: '0',
           videoId: '0J2QdDbelmY',
+		  playerVars: { 'autoplay': 1, 'loop': 1 },
           events: {
             'onReady': onPlayerReady,
             'onStateChange': onPlayerStateChange
@@ -187,7 +188,7 @@
 	  //<iframe id="lolyjop" width="0" height="0" src="https://www.youtube.com/embed/0J2QdDbelmY?rel=0&autoplay=1&loop=1" frameborder="0" style="width:0px; height:0px;"></iframe>
       // 4. The API will call this function when the video player is ready.
       function onPlayerReady(event) {
-           event.target.setVolume(3);
+           event.target.setVolume(6);
        event.target.playVideo();
       }
       // 5. The API calls this function when the player's state changes.
@@ -199,7 +200,7 @@
     //      setTimeout(stopVideo, 6000);
                   done = true;
         }
-           event.target.setVolume(3);
+           event.target.setVolume(6);
       }
 </script>
 </body>
