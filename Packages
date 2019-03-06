@@ -8,5 +8,5 @@ Depends: firmware (>= 12.0), mobilesubstrate, firmware (<= 12.1.2)
 Description: This tweak brings back iOS 10-like signal dots to iOS 12. NO SUPPORT FOR IOS 11 OR FUTURE IOS LIKE 13.
 Filename: ./debs/com.applevegas.betensignal_2.2_iphoneos-arm.deb
 Size: 1259574
-MD5sum: e1af884af609a7a5af8dd3b2451b027e
+MD5sum: b714ca4ab0f4bf71adaf7106dcd34b31
 Name: Be10Signal
