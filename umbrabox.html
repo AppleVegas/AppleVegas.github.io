@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Привет</title>
+  <script>
+</script>
+  <style>
+  @font-face { font-family: SFUI; src: url('SFUIb.ttf'); }
+    body {font-family: "SFUI"; text-align:  center; background-color: black;  position: relative; top: 30px; background-size: 100%; margin: 0px; overflow:hidden;}
+	load {border-radius: 50%; position: relative; top: 10px;}
+    h1 {font-size:2em; text-decoration: none; position: relative;}
+    kodi {font-family: "SFUI"; text-align:  center; margin: 0px;}
+    h2 {font-size:1em; color: #ffffff;  text-shadow: black 0px 0px 14px; position: relative;}
+    h3 {font-size:1.5em; color: #ffffff;  text-shadow: black 0px 0px 14px; position: relative; top: 50px; right: 1.5%;}
+}
+#container {
+  position:relative;
+}
+
+#container img {
+  position:absolute;
+  left:0;
+}
+
+@-webkit-keyframes imgFade {
+ 0% {
+   opacity:1;
+ }
+ 17% {
+   opacity:1;
+ }
+ 25% {
+   opacity:0;
+ }
+ 92% {
+   opacity:0;
+ }
+ 100% {
+   opacity:1;
+ }
+}
+
+@-moz-keyframes imgFade {
+ 0% {
+   opacity:1;
+ }
+ 17% {
+   opacity:1;
+ }
+ 25% {
+   opacity:0;
+ }
+ 92% {
+   opacity:0;
+ }
+ 100% {
+   opacity:1;
+ }
+}
+
+@-o-keyframes imgFade {
+ 0% {
+   opacity:1;
+ }
+ 17% {
+   opacity:1;
+ }
+ 25% {
+   opacity:0;
+ }
+ 92% {
+   opacity:0;
+ }
+ 100% {
+   opacity:1;
+ }
+}
+
+@keyframes imgFade {
+ 0% {
+   opacity:1;
+ }
+ 17% {
+   opacity:1;
+ }
+ 25% {
+   opacity:0;
+ }
+ 92% {
+   opacity:0;
+ }
+ 100% {
+   opacity:1;
+ }
+}
+
+#container img {
+  -webkit-animation-name: imgFade;
+  -webkit-animation-timing-function: ease-in-out;
+  -webkit-animation-iteration-count: infinite;
+  -webkit-animation-duration: 24s;
+
+  -moz-animation-name: imgFade;
+  -moz-animation-timing-function: ease-in-out;
+  -moz-animation-iteration-count: infinite;
+  -moz-animation-duration: 24s;
+
+  -o-animation-name: imgFade;
+  -o-animation-timing-function: ease-in-out;
+  -o-animation-iteration-count: infinite;
+  -o-animation-duration: 24s;
+
+  animation-name: imgFade;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  animation-duration: 24s;
+}
+#container img:nth-of-type(1) {
+  -webkit-animation-delay: 18s;
+  -moz-animation-delay: 18s;
+  -o-animation-delay: 18s;
+  animation-delay: 18s;
+}
+#container img:nth-of-type(2) {
+  -webkit-animation-delay: 12s;
+  -moz-animation-delay: 12s;
+  -o-animation-delay: 12s;
+  animation-delay: 12s;
+}
+#container img:nth-of-type(3) {
+  -webkit-animation-delay: 6s;
+  -moz-animation-delay: 6s;
+  -o-animation-delay: 6s;
+  animation-delay: 6s;
+}
+#container img:nth-of-type(4) {
+  -webkit-animation-delay: 0;
+  -moz-animation-delay: 0;
+  -o-animation-delay: 0;
+  animation-delay: 0;
+}
+</style>
+</head>
+<kodi>
+ <div id="container">
+    <img src="1u.jpg" style="top: -60px;">
+    <img src="2u.jpg" style="top: -60px;">
+    <img src="3u.jpg" style="top: -60px;">
+    <img src="4u.jpg"  style="top: -60px;">
+</div>
+<img src="serverumbra.jpg" width=10% height=10% onclick="window.location.href='http://twitter.com/appleveg'" style="border-radius: 50%; position: relative; top: 10px; box-shadow: black 0px 0px 25px;">
+</kodi>
+ <body>
+ <h1><a href="http://twitter.com/appleveg" style="color: #ffffff; text-decoration: none; text-shadow: black 0px 0px 25px;">UmbraBox</a></h1>
+<h2>Вышел из тени чтобы сражаться... Кто же это может быть? - UmbraBox!</h2>
+<h2>Большая карта - есть много места для ваших безумных идей!</h2>
+<h2>Техника - по большой карте надо как-то передвигаться...</h2>
+<h2>Множество оружия - если возникнуть разногласия, вы знаете как это решить.</h2>
+<h2>Принтеры - на большой карте крутятся большие деньги, станьте миллионером!</h2>
+<h2>И всё это вас ждёт тут, на уютном сервере UmbraBox!</h2>
+<h2>Не забывай про контент сервера! Ссылку на него можно найти в чате.</h2>
+<img src="load.gif" width=2% height=2% style="border-radius: 50%; position: relative; top: 150px;">
+<div id="player"></div>
+<script>
+      // 2. This code loads the IFrame Player API code asynchronously.
+      var tag = document.createElement('script');
+      tag.src = "https://www.youtube.com/iframe_api";
+      var firstScriptTag = document.getElementsByTagName('script')[0];
+      firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+      // 3. This function creates an <iframe> (and YouTube player)
+      //    after the API code downloads.
+      var player;
+      function onYouTubeIframeAPIReady() {
+        player = new YT.Player('player', {
+          height: '0',
+          width: '0',
+          videoId: '0J2QdDbelmY',
+		  playerVars: { 'autoplay': 1, 'loop': 1 },
+          events: {
+            'onReady': onPlayerReady,
+            'onStateChange': onPlayerStateChange
+          }
+        });
+      }
+	  //<iframe id="lolyjop" width="0" height="0" src="https://www.youtube.com/embed/0J2QdDbelmY?rel=0&autoplay=1&loop=1" frameborder="0" style="width:0px; height:0px;"></iframe>
+      // 4. The API will call this function when the video player is ready.
+      function onPlayerReady(event) {
+           event.target.setVolume(20);
+       event.target.playVideo();
+      }
+      // 5. The API calls this function when the player's state changes.
+      //    The function indicates that when playing a video (state=1),
+      //    the player should play for six seconds and then stop.
+      var done = false;
+      function onPlayerStateChange(event) {
+        if (event.data == YT.PlayerState.PLAYING && !done) {
+    //      setTimeout(stopVideo, 6000);
+                  done = false;
+        }
+           event.target.setVolume(20);
+      }
+</script>
+</body>
+</html>
+
