@@ -5,6 +5,20 @@
   <meta charset="utf-8" />
   <title>Привет</title>
   <script>
+  function getUrlVars() {
+    var vars = {};
+    var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+        vars[key] = value;
+    });
+    return vars;
+}
+function getUrlParam(parameter, defaultvalue){
+    var urlparameter = defaultvalue;
+    if(window.location.href.indexOf(parameter) > -1){
+        urlparameter = getUrlVars()[parameter];
+        }
+    return urlparameter;
+}
 </script>
   <style>
   @font-face { font-family: SFUI; src: url('SFUIb.ttf'); }
@@ -160,8 +174,14 @@
 <h2>Множество оружия - если возникнут разногласия, вы знаете как это решить.</h2>
 <h2>Принтеры - на большой карте крутятся большие деньги, станьте миллионером!</h2>
 <h2>И всё это вас ждёт тут, на уютном сервере UmbraBox!</h2>
-<h2>Не забывай про контент сервера! Ссылку на него можно найти в чате.</h2>
+<h2 id="helloid"></h2>
 <img src="load.gif" width=2% height=2% style="border-radius: 50%; position: relative; top: 150px;">
+<script>
+ 
+var mapname = getUrlParam("mapname", "gm_construct");
+var steamid = getUrlParam("steamid", "no");
+document.getElementById("helloid").innerHTML = "Карта на сервере - "+mapname;
+</script>
 <div id="player"></div>
 <script>
       // 2. This code loads the IFrame Player API code asynchronously.
