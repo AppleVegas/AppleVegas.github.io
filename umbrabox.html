@@ -4,7 +4,6 @@
 <head>
   <meta charset="utf-8" />
   <title>Привет</title>
-  <script src="jquery-1.9.1.min.js"></script>
   <script>
   function getUrlVars() {
     var vars = {};
@@ -24,8 +23,8 @@ function getUrlParam(parameter, defaultvalue){
   <style>
   @font-face { font-family: SFUI; src: url('SFUIb.ttf'); }
     body {font-family: "SFUI"; text-align:  center; background-color: black; background-size: 100%; margin: 0px; overflow:hidden;}
-    h1 {font-size:2em; text-decoration: none; position: relative;}
-    h2 {font-size:1em; color: #ffffff;  text-shadow: black 0px 0px 14px;}
+    h1 {font-size:2.35vw; text-decoration: none; position: relative;}
+    h2 {font-size:1.16vw; color: #ffffff;  text-shadow: black 0px 0px 14px;}
     h3 {font-size:1.5em; color: #ffffff;  text-shadow: black 0px 0px 14px; position: relative; top: 50px; right: 1.5%;}
 }
 body, html {
@@ -77,37 +76,63 @@ body, html {
 </head>
 <body>
 <div id="back">
-    <div class="bg1"></div>
-    <div class="bg2" style="display: none;"></div>
-    <div class="bg3" style="display: none;" ></div>
-    <div class="bg4" style="display: none;" ></div>
+    <div class="bg4" id="im4" style="opacity: 0;" ></div>
+	<div class="bg3" id="im3" style="opacity: 0;" ></div>
+	<div class="bg2" id="im2" style="opacity: 0;"></div>
+	<div class="bg1" id="im1" style="opacity: 1;"></div>
 </div>
 <script>
+	var cur1 = 1;
+	function fadeOutEffect(target) {
+    var fadeTarget = document.getElementById(target);
+    var fadeEffect = setInterval(function () {
+        if (!fadeTarget.style.opacity) {
+            fadeTarget.style.opacity = 1;
+        }
+        if (fadeTarget.style.opacity != 0) {
+            fadeTarget.style.opacity -= 0.01;
+        } else {
+            clearInterval(fadeEffect);
+        }
+    }, 10);
+	}
+
+	function fadeInEffect(target) {
+    var fadeTarget = document.getElementById(target);
+	var opacity = fadeTarget.style.opacity;
+    var fadeEffect = setInterval(function () {
+        if (!fadeTarget.style.opacity) {
+            fadeTarget.style.opacity = 0;
+        }
+        if (fadeTarget.style.opacity != 1) {
+            fadeTarget.style.opacity = +fadeTarget.style.opacity + 0.01;
+        } else {
+            clearInterval(fadeEffect);
+			document.getElementById("im4").style.opacity = 0
+        }
+    }, 10);
+	}
 	function Divs() {
-        var divs= $('#back div'),
-            now = divs.filter(':visible'),
-            next = now.next().length ? now.next() : divs.first(),
-            speed = 2000;
-        if (now.next().length == 0)
+        
+        if (cur1 != 4)
 		{
-		next.fadeIn(1);
-		now.fadeOut(speed);
+		document.getElementById("im"+(cur1+1)).style.opacity = 1;
+		fadeOutEffect("im"+cur1);
+		cur1 = cur1+1;
 		}
 		else
 		{
-		next.fadeIn(speed);
-        setTimeout(() => now.fadeOut(1),3000);
+		fadeInEffect("im1");
+        cur1 = 1;
 		}
     }
     
-    $(function () {
-        setInterval(Divs, 6000);
-    });
+    setInterval(Divs, 6000);
 
 </script>
-<div id="maintext" style="position: fixed; top: 7%; left: 50%; transform: translateX(-50%);">
+<div id="maintext" style="position: fixed; top: 7%; width: 100%;">
 	<div id="logo">
-		<img src="serverumbra.jpg" width=22% height=22% onclick="window.location.href='http://twitter.com/appleveg'" style="border-radius: 50%; box-shadow: black 0px 0px 25px;">
+		<img src="serverumbra.jpg" width=10% height=10% onclick="window.location.href='http://twitter.com/appleveg'" style="border-radius: 50%; box-shadow: black 0px 0px 25px;">
 		<h1><a href="http://twitter.com/appleveg" style="color: #ffffff; text-decoration: none; text-shadow: black 0px 0px 25px;">UmbraBox</a></h1>
 	</div>
 	<div id="description">
@@ -120,8 +145,8 @@ body, html {
 		<h2 id="helloid"></h2>
 	</div>
 </div>
-<div id="loading" style="position: fixed; top: 80%; left: 50%; transform: translateX(-50%);">
-	<img src="load.gif" width=10% height=10% style="border-radius: 50%;">
+<div id="loading" style="position: fixed; top: 80%; width: 100%;">
+	<img src="load.gif" width=2.3% height=2.3% style="position: relative; border-radius: 50%;">
 	<h2 id="downloadingid">Загрузка...</h2>
 </div>
 
@@ -177,53 +202,6 @@ function SetStatusChanged( status )
 <audio autoplay loop id="nochrome">
 	<source src="music.ogg" type="audio/ogg">
 </audio>
-<script>
-var isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
-  if(!isChrome){
-    $('#player').remove()
-  }
-else
-{
-	$('#nochrome').remove()
-      // 2. This code loads the IFrame Player API code asynchronously.
-      var tag = document.createElement('script');
-      tag.src = "https://www.youtube.com/iframe_api";
-      var firstScriptTag = document.getElementsByTagName('script')[0];
-      firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-      // 3. This function creates an <iframe> (and YouTube player)
-      //    after the API code downloads.
-      var player;
-      function onYouTubeIframeAPIReady() {
-        player = new YT.Player('player', {
-          height: '0',
-          width: '0',
-          videoId: '0J2QdDbelmY',
-		  playerVars: { 'autoplay': 1, 'loop': 1 },
-          events: {
-            'onReady': onPlayerReady,
-            'onStateChange': onPlayerStateChange
-          }
-        });
-      }
-	  //<iframe id="lolyjop" width="0" height="0" src="https://www.youtube.com/embed/0J2QdDbelmY?rel=0&autoplay=1&loop=1" frameborder="0" style="width:0px; height:0px;"></iframe>
-      // 4. The API will call this function when the video player is ready.
-      function onPlayerReady(event) {
-           event.target.setVolume(20);
-       event.target.playVideo();
-      }
-      // 5. The API calls this function when the player's state changes.
-      //    The function indicates that when playing a video (state=1),
-      //    the player should play for six seconds and then stop.
-      var done = false;
-      function onPlayerStateChange(event) {
-        if (event.data == YT.PlayerState.PLAYING && !done) {
-    //      setTimeout(stopVideo, 6000);
-                  done = false;
-        }
-           event.target.setVolume(20);
-      }
-}
-</script>
 </body>
 </html>
 
