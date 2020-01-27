@@ -4,6 +4,7 @@
 <head>
   <meta charset="utf-8" />
   <title>Привет</title>
+  <script src="jquery-1.9.1.min.js"></script>
   <script>
   function getUrlVars() {
     var vars = {};
@@ -22,168 +23,168 @@ function getUrlParam(parameter, defaultvalue){
 </script>
   <style>
   @font-face { font-family: SFUI; src: url('SFUIb.ttf'); }
-    body {font-family: "SFUI"; text-align:  center; background-color: black;  position: relative; top: 30px; background-size: 100%; margin: 0px; overflow:hidden;}
-	load {border-radius: 50%; position: relative; top: 10px;}
+    body {font-family: "SFUI"; text-align:  center; background-color: black; background-size: 100%; margin: 0px; overflow:hidden;}
     h1 {font-size:2em; text-decoration: none; position: relative;}
-    kodi {font-family: "SFUI"; text-align:  center; margin: 0px;}
-    h2 {font-size:1em; color: #ffffff;  text-shadow: black 0px 0px 14px; position: relative;}
+    h2 {font-size:1em; color: #ffffff;  text-shadow: black 0px 0px 14px;}
     h3 {font-size:1.5em; color: #ffffff;  text-shadow: black 0px 0px 14px; position: relative; top: 50px; right: 1.5%;}
 }
-#container {
-  position:relative;
+body, html {
+  height: 100%;
+  margin: 0;
+}
+#back div {
+  position: absolute; 
+  top: 0; 
+  left: 0;
+  width: 100%; 
+  height: 100%;
+  
 }
 
-#container img {
-  position:absolute;
-  left:0;
+#back div:first-child {
+    display:block;
 }
 
-@-webkit-keyframes imgFade {
- 0% {
-   opacity:1;
- }
- 17% {
-   opacity:1;
- }
- 25% {
-   opacity:0;
- }
- 92% {
-   opacity:0;
- }
- 100% {
-   opacity:1;
- }
+.bg1 {
+	background-image: url("1u.jpg");
+	height: 100%;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: cover;
 }
-
-@-moz-keyframes imgFade {
- 0% {
-   opacity:1;
- }
- 17% {
-   opacity:1;
- }
- 25% {
-   opacity:0;
- }
- 92% {
-   opacity:0;
- }
- 100% {
-   opacity:1;
- }
+.bg2 {
+	background-image: url("2u.jpg");
+	height: 100%;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: cover;
 }
-
-@-o-keyframes imgFade {
- 0% {
-   opacity:1;
- }
- 17% {
-   opacity:1;
- }
- 25% {
-   opacity:0;
- }
- 92% {
-   opacity:0;
- }
- 100% {
-   opacity:1;
- }
+.bg3 {
+	background-image: url("3u.jpg");
+	height: 100%;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: cover;
 }
-
-@keyframes imgFade {
- 0% {
-   opacity:1;
- }
- 17% {
-   opacity:1;
- }
- 25% {
-   opacity:0;
- }
- 92% {
-   opacity:0;
- }
- 100% {
-   opacity:1;
- }
-}
-
-#container img {
-  -webkit-animation-name: imgFade;
-  -webkit-animation-timing-function: ease-in-out;
-  -webkit-animation-iteration-count: infinite;
-  -webkit-animation-duration: 24s;
-
-  -moz-animation-name: imgFade;
-  -moz-animation-timing-function: ease-in-out;
-  -moz-animation-iteration-count: infinite;
-  -moz-animation-duration: 24s;
-
-  -o-animation-name: imgFade;
-  -o-animation-timing-function: ease-in-out;
-  -o-animation-iteration-count: infinite;
-  -o-animation-duration: 24s;
-
-  animation-name: imgFade;
-  animation-timing-function: ease-in-out;
-  animation-iteration-count: infinite;
-  animation-duration: 24s;
-}
-#container img:nth-of-type(1) {
-  -webkit-animation-delay: 18s;
-  -moz-animation-delay: 18s;
-  -o-animation-delay: 18s;
-  animation-delay: 18s;
-}
-#container img:nth-of-type(2) {
-  -webkit-animation-delay: 12s;
-  -moz-animation-delay: 12s;
-  -o-animation-delay: 12s;
-  animation-delay: 12s;
-}
-#container img:nth-of-type(3) {
-  -webkit-animation-delay: 6s;
-  -moz-animation-delay: 6s;
-  -o-animation-delay: 6s;
-  animation-delay: 6s;
-}
-#container img:nth-of-type(4) {
-  -webkit-animation-delay: 0;
-  -moz-animation-delay: 0;
-  -o-animation-delay: 0;
-  animation-delay: 0;
+.bg4 {
+	background-image: url("4u.jpg");
+	height: 100%;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: cover;
 }
 </style>
 </head>
-<kodi>
- <div id="container">
-    <img src="1u.jpg" style="top: -60px;">
-    <img src="2u.jpg" style="top: -60px;">
-    <img src="3u.jpg" style="top: -60px;">
-    <img src="4u.jpg"  style="top: -60px;">
+<body>
+<div id="back">
+    <div class="bg1"></div>
+    <div class="bg2" style="display: none;"></div>
+    <div class="bg3" style="display: none;" ></div>
+    <div class="bg4" style="display: none;" ></div>
 </div>
-<img src="serverumbra.jpg" width=10% height=10% onclick="window.location.href='http://twitter.com/appleveg'" style="border-radius: 50%; position: relative; top: 10px; box-shadow: black 0px 0px 25px;">
-</kodi>
- <body>
- <h1><a href="http://twitter.com/appleveg" style="color: #ffffff; text-decoration: none; text-shadow: black 0px 0px 25px;">UmbraBox</a></h1>
-<h2>Вышел из тени чтобы сражаться... Кто же это может быть? - UmbraBox!</h2>
-<h2>Большая карта - есть много места для ваших безумных идей!</h2>
-<h2>Техника - по большой карте надо как-то передвигаться...</h2>
-<h2>Множество оружия - если возникнут разногласия, вы знаете как это решить.</h2>
-<h2>Принтеры - на большой карте крутятся большие деньги, станьте миллионером!</h2>
-<h2>И всё это вас ждёт тут, на уютном сервере UmbraBox!</h2>
-<h2 id="helloid"></h2>
-<img src="load.gif" width=2% height=2% style="border-radius: 50%; position: relative; top: 150px;">
+<script>
+	function Divs() {
+        var divs= $('#back div'),
+            now = divs.filter(':visible'),
+            next = now.next().length ? now.next() : divs.first(),
+            speed = 2000;
+        if (now.next().length == 0)
+		{
+		next.fadeIn(1);
+		now.fadeOut(speed);
+		}
+		else
+		{
+		next.fadeIn(speed);
+        setTimeout(() => now.fadeOut(1),3000);
+		}
+    }
+    
+    $(function () {
+        setInterval(Divs, 6000);
+    });
+
+</script>
+<div id="maintext" style="position: fixed; top: 7%; left: 50%; transform: translateX(-50%);">
+	<div id="logo">
+		<img src="serverumbra.jpg" width=22% height=22% onclick="window.location.href='http://twitter.com/appleveg'" style="border-radius: 50%; box-shadow: black 0px 0px 25px;">
+		<h1><a href="http://twitter.com/appleveg" style="color: #ffffff; text-decoration: none; text-shadow: black 0px 0px 25px;">UmbraBox</a></h1>
+	</div>
+	<div id="description">
+		<h2>Вышел из тени чтобы сражаться... Кто же это может быть? - UmbraBox!</h2>
+		<h2>Большая карта - есть много места для ваших безумных идей!</h2>
+		<h2>Техника - по большой карте надо как-то передвигаться...</h2>
+		<h2>Множество оружия - если возникнут разногласия, вы знаете как это решить.</h2>
+		<h2>Принтеры - на большой карте крутятся большие деньги, станьте миллионером!</h2>
+		<h2>И всё это вас ждёт тут, на уютном сервере UmbraBox!</h2>
+		<h2 id="helloid"></h2>
+	</div>
+</div>
+<div id="loading" style="position: fixed; top: 80%; left: 50%; transform: translateX(-50%);">
+	<img src="load.gif" width=10% height=10% style="border-radius: 50%;">
+	<h2 id="downloadingid">Загрузка...</h2>
+</div>
+
 <script>
  
-var mapname = getUrlParam("mapname", "gm_construct");
-var steamid = getUrlParam("steamid", "no");
+var mapname = getUrlParam("mapname", "no_info");
+var steamid = getUrlParam("steamid", "no_info");
+var filestotal = 0;
+var curfile = "";
+var statuss;
+var filesleft = 0;
+var connected = false;
 document.getElementById("helloid").innerHTML = "Карта на сервере - "+mapname;
+
+function SetStatus() 
+{
+	if (!connected){
+	
+	document.getElementById("downloadingid").innerHTML = "Загрузка - "+curfile+" - "+filesleft+" из "+filestotal
+	
+	}
+	else
+	{
+		document.getElementById("downloadingid").innerHTML = "Вот-вот загрузится..."
+	}
+}
+function SetFilesTotal( num ) 
+{
+	filestotal = num;
+	SetStatus() 
+}
+function SetFilesNeeded( fileName ) 
+{
+	filesleft = fileName;
+	SetStatus() 
+}
+function DownloadingFile( fileName ) 
+{
+	curfile = fileName;
+	SetStatus() 
+}
+function SetStatusChanged( status ) 
+{
+	if (status.toLowerCase().includes("starting lua"))
+	{
+		connected = true;
+		SetStatus() 
+	}
+}
+
 </script>
 <div id="player"></div>
+<audio autoplay loop>
+	<source src="music.ogg" type="audio/ogg" id="nochrome">
+</audio>
 <script>
+var isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
+  if(!isChrome){
+    $('#player').remove()
+  }
+else
+{
+	$('#nochrome').remove()
       // 2. This code loads the IFrame Player API code asynchronously.
       var tag = document.createElement('script');
       tag.src = "https://www.youtube.com/iframe_api";
@@ -221,6 +222,7 @@ document.getElementById("helloid").innerHTML = "Карта на сервере -
         }
            event.target.setVolume(20);
       }
+}
 </script>
 </body>
 </html>
