@@ -73,7 +73,7 @@ function encrypts(val)
 function generate()
 {
 	var uval = document.getElementById("ugly").value
-	document.getElementById("uglier").value = "file:///D:/Documents/GitHub/AppleVegas.github.io/restore.html?restore=" + encrypts(uval);
+	document.getElementById("uglier").value = "applevegas.github.io/restore.html?restore=" + encrypts(uval);
 	document.getElementById("uglier").style.visibility = 'visible';
 	document.getElementById("uglierc").style.visibility = 'visible';
 }
