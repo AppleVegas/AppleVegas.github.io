@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>The Amazing Website</title>
+  <style>
+  @font-face { font-family: SFUI; src: url('SFUIb.ttf'); }
+    body {font-family: "SFUI"; text-align:  center; background-color: black; background-size: 100%; margin: 0px; overflow:hidden;}
+    h1 {margin-top: 10px;; font-size:2em; text-decoration: none; position: relative;}
+    h2 {font-size:1em; color: #ffffff;  text-shadow: black 0px 0px 14px;}
+    h3 {font-size:1.5em; color: #ffffff;  text-shadow: black 0px 0px 14px; position: relative; top: 50px; right: 1.5%;}
+}
+body, html {
+  height: 100%;
+  margin: 0;
+}
+#back div {
+  position: absolute; 
+  top: 0; 
+  left: 0;
+  width: 100%; 
+  height: 100%;
+  
+}
+
+#back div:first-child {
+    display:block;
+}
+
+.bg1 {
+	background-image: url("oback.jpg");
+	height: 100%;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: cover;
+}
+.divasya {
+    position: absolute;
+    top: 50%;  
+    left: 50%; 
+
+    transform: translate(-50%, -50%); 
+}
+
+box1 {
+    width: 600px;
+    border: 5px solid grey;
+    background: white;
+    padding: 15px;
+    margin: 0px;
+    position: relative;
+    top: 20px;
+    box-shadow: black 0px 0px 20px;
+    background: url('sier.jpg'); 
+    background-size: 200%;
+    background-position: center;
+    background-position-y: 100px
+ }
+</style>
+</head>
+<body>
+<div id="back">
+    <div class="bg1" id="im4" style="opacity: 1;" ></div>
+</div>
+<script>
+	var cur1 = 1;
+
+
+</script>
+<div class="divasya" id="maintext">
+	<div id="encrypt">
+		<h2>Вставьте сюда ссылку:</h2>
+		<input type="text" id="ugly" value="http://google.com/"><br><br>
+		<input type="submit" value="Сгенерировать" onclick="generate()"><br><br>
+		<input type="text" id="uglier" style="visibility: hidden;"><br><br>
+		<input type="submit" id="uglierc" style="visibility: hidden;" value="Cкопировать" onclick="copyTextToClipboard(document.getElementById('uglier').value)">
+	</div>
+	<div id="go">
+		<box1 onclick="go()"><a id="linker" href="http://google.com/" style="color: white; text-decoration: none; font-size: 0.9em; text-shadow: black 0px 0px 2.5px">Перейти</a></box1>
+	</div>
+</div>
+<script src="https://bitwiseshiftleft.github.io/sjcl/sjcl.js"></script>
+<script src="restore.js"></script>
+</body>
+</html>
+
