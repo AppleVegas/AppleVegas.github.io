@@ -70,12 +70,30 @@ function encrypts(val)
 	return readyuval;
 }
 
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 function generate()
 {
 	var uval = document.getElementById("ugly").value
 	document.getElementById("uglier").value = "applevegas.github.io/restore.html?restore=" + encrypts(uval);
 	document.getElementById("uglier").style.visibility = 'visible';
 	document.getElementById("uglierc").style.visibility = 'visible';
+}
+async function auto()
+{
+	await sleep(1000);
+	document.getElementById("linker2").innerHTML = 4;
+	await sleep(1000);
+	document.getElementById("linker2").innerHTML = 3;
+	await sleep(1000);
+	document.getElementById("linker2").innerHTML = 2;
+	await sleep(1000);
+	document.getElementById("linker2").innerHTML = 1;
+	await sleep(1000);
+	document.getElementById("linker2").innerHTML = 1;
+	go();
 }
 
 var urla = getUrlParam("restore", "no_info");
@@ -91,4 +109,7 @@ else
 	lie = sjcl.decrypt("minecraft", atob(urla));
 	//console.log(templie)
 	document.getElementById("linker").href = lie;
+	document.getElementById("linker2").href = lie;
+	document.getElementById("linker3").href = lie;
+	auto();
 }
