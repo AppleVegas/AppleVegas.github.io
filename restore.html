@@ -3,6 +3,17 @@
 <html>
 <head>
   <meta charset="utf-8" />
+  <meta property="og:site_name" content="The Amazing Website" />
+  <meta property="og:type" content="website" />
+  <meta name="title" property="og:title" content="The Amazing Website" />
+  <meta name="image" property="og:image" content="https://applevegas.github.io/wbst.jpg"/>
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:width" content="1920">
+  <meta property="og:image:height" content="1080">
+  <meta name="description" property="og:description" content="Click" />
+  <meta name="twitter:title" content="The Amazing Website" />
+  <meta name="twitter:description" content="Click" />
+  <meta name="twitter:image:src" content="https://applevegas.github.io/wbst.jpg">
   <title>The Amazing Website</title>
   <style>
   @font-face { font-family: SFUI; src: url('SFUIb.ttf'); }
@@ -39,23 +50,27 @@ body, html {
     position: absolute;
     top: 50%;  
     left: 50%; 
+    width: 50%;
+    height: 50%;
 
     transform: translate(-50%, -50%); 
 }
 
-box1 {
-    width: 600px;
+.box1 {
+	position: absolute;
+     top: 50%;  
+    left: 50%; 
+
+    transform: translate(-50%, -50%); 
+    width: 40%;
     border: 5px solid grey;
     background: white;
-    padding: 15px;
-    margin: 0px;
-    position: relative;
-    top: 20px;
+    padding: 2%;
     box-shadow: black 0px 0px 20px;
     background: url('sier.jpg'); 
     background-size: 200%;
     background-position: center;
-    background-position-y: 100px
+    background-position-y: 55%
  }
 </style>
 </head>
@@ -77,7 +92,9 @@ box1 {
 		<input type="submit" id="uglierc" style="visibility: hidden;" value="Cкопировать" onclick="copyTextToClipboard(document.getElementById('uglier').value)">
 	</div>
 	<div id="go">
-		<box1 onclick="go()"><a id="linker" href="http://google.com/" style="color: white; text-decoration: none; font-size: 0.9em; text-shadow: black 0px 0px 2.5px">Перейти или подождать </a><a id="linker2" href="http://google.com/" style="color: white; text-decoration: none; font-size: 0.9em; text-shadow: black 0px 0px 2.5px">5</a><a id="linker3" href="http://google.com/" style="color: white; text-decoration: none; font-size: 0.9em; text-shadow: black 0px 0px 2.5px"> секунд</a></box1>
+		<div class="box1">
+			<a id="linker" style="color: white; text-decoration: none; font-size: 1vw; text-shadow: black 0px 0px 2.5px">Пожалуйста, подождите 5 секунд</a>
+		</div>
 	</div>
 </div>
 <script src="sjcl.js"></script>

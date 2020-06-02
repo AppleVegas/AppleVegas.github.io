@@ -84,15 +84,15 @@ function generate()
 async function auto()
 {
 	await sleep(1000);
-	document.getElementById("linker2").innerHTML = 4;
+	document.getElementById("linker").innerHTML = "Пожалуйста, подождите 4 секунды";
 	await sleep(1000);
-	document.getElementById("linker2").innerHTML = 3;
+	document.getElementById("linker").innerHTML = "Пожалуйста, подождите 3 секунды";
 	await sleep(1000);
-	document.getElementById("linker2").innerHTML = 2;
+	document.getElementById("linker").innerHTML = "Пожалуйста, подождите 2 секунды";
 	await sleep(1000);
-	document.getElementById("linker2").innerHTML = 1;
+	document.getElementById("linker").innerHTML = "Пожалуйста, подождите 1 секунду";
 	await sleep(1000);
-	document.getElementById("linker2").innerHTML = 1;
+	document.getElementById("linker").innerHTML = "Переход...";
 	go();
 }
 
@@ -108,8 +108,5 @@ else
 	//var templie = JSON.stringify(JSON.parse(atob(urla)));
 	lie = sjcl.decrypt("minecraft", atob(urla));
 	//console.log(templie)
-	document.getElementById("linker").href = lie;
-	document.getElementById("linker2").href = lie;
-	document.getElementById("linker3").href = lie;
 	auto();
 }
