@@ -11,6 +11,12 @@ function ScreenScale(int)
 
 var screenscale = ScreenScale(1366)
 
+function Scale(num)
+{
+    return (num*screenscale)
+}
+
+var curtime = 0
 function changeResolution(cnvs, width, height)
 {
     cnvs.style.width = width.toString() + "px"
@@ -79,13 +85,21 @@ $("body").mousemove(function(e) {
     mousey = e.pageY;
 })
 
-var lasttime = 0
-var frames = 0
-var fps = 0
-
 const TheGame = {
+    Settings:{
+        TickCount: 60
+    },
+    Constants:{
+        TickHandler: null
+    },
     Player: {
-        Rotation: 0
+        RotationTime: 0.5,
+        Rotation: 0,
+        OldRotation: 0,
+        NewRotation: 0,
+        WasSpinned: false,
+        NewTime: 0,
+        Shot: true
     },
     Bullets:[]
 }
@@ -101,7 +115,19 @@ TheGame.FireBullet = function(x,y,angle, speed = 1){
 }
 
 $( "body" ).click(function() {
-    TheGame.FireBullet(w/2,h/2, TheGame.Player.Rotation, 4)
+    if (curtime - TheGame.Player.NewTime > (TheGame.Player.RotationTime*1000))
+    {
+        TheGame.Player.Shot = false
+        if (TheGame.Player.WasSpinned)
+        {
+            TheGame.Player.Rotation = TheGame.Player.NewRotation
+            TheGame.Player.WasSpinned = false
+        }
+        TheGame.Player.OldRotation = TheGame.Player.Rotation
+        TheGame.Player.NewRotation = (Math.atan2(mousey - h/2, mousex - w/2)* 180 / Math.PI)
+        TheGame.Player.NewTime = curtime
+        //TheGame.FireBullet(w/2,h/2, TheGame.Player.Rotation, 4)
+    }
 });
 
 function BulletMove(){
@@ -116,8 +142,7 @@ function BulletMove(){
             TheGame.Bullets.splice(i, 1)
             continue;
         }
-        //TheGame.Bullets[i].X = approach(TheGame.Bullets[i].X, TheGame.Bullets[i].DirX, TheGame.Bullets[i].Speed)
-        //TheGame.Bullets[i].Y = approach(TheGame.Bullets[i].Y, TheGame.Bullets[i].DirY, TheGame.Bullets[i].Speed)
+
         let rot = TheGame.Bullets[i].Ang * Math.PI /180
         dx = (Math.cos(rot) * TheGame.Bullets[i].Speed);
         dy = (Math.sin(rot) * TheGame.Bullets[i].Speed)
@@ -131,17 +156,56 @@ function DrawBullets(){
         ctx.translate(TheGame.Bullets[i].X, TheGame.Bullets[i].Y);
         let rot = (TheGame.Bullets[i].Ang - 90) * Math.PI /180
         ctx.fillStyle = "white"
-        let size = 10
+        let size = Scale(5)
         ctx.rotate(rot);
-        Line(ctx, 0, 0, 0, 10, 1, "white")
-        ctx.fillRect(0 - (size/2)*screenscale, 0 - (size/2)*screenscale, size*screenscale, size*screenscale)
+        Line(ctx, 0, 0, 0, 10*screenscale, 1, "white")
+        ctx.fillRect(0 - (size/2), 0 - (size/2), size, size)
         ctx.resetTransform();
         ctx.fillStyle = "white"
     }
 }
 
+function easeInOutCubic(t, b, c, d) {
+    if ((t /= d / 2) < 1) return c / 2 * t * t * t + b;
+    return c / 2 * ((t -= 2) * t * t + 2) + b;
+}
+
+function Tick(){
+    BulletMove()
+
+    if (curtime - TheGame.Player.NewTime <= (TheGame.Player.RotationTime*1000))
+    {
+        let add = (TheGame.Player.NewRotation - TheGame.Player.OldRotation)
+        if (add >= 180 || add <= -180)
+        {
+            TheGame.Player.WasSpinned = true
+            add = ((180 - Math.abs(TheGame.Player.OldRotation)) + (180 - Math.abs(TheGame.Player.NewRotation)))
+            //console.log(add)
+            if (TheGame.Player.NewRotation > TheGame.Player.OldRotation){
+                TheGame.Player.Rotation = easeInOutCubic((curtime - TheGame.Player.NewTime)/(TheGame.Player.RotationTime*1000), TheGame.Player.OldRotation, add*-1, 1);
+            }else{
+                TheGame.Player.Rotation = easeInOutCubic((curtime - TheGame.Player.NewTime)/(TheGame.Player.RotationTime*1000), TheGame.Player.OldRotation, add, 1);
+            }
+            
+        }else{
+            TheGame.Player.Rotation = easeInOutCubic((curtime - TheGame.Player.NewTime)/(TheGame.Player.RotationTime*1000), TheGame.Player.OldRotation, add, 1);
+        }
+    }else{
+        if (!TheGame.Player.Shot){
+            TheGame.Player.Shot = true
+            TheGame.FireBullet(w/2,h/2, TheGame.Player.Rotation, 4)
+        }
+    }
+
+}
+TheGame.Constants.TickHandler = setInterval(Tick, 1000 / TheGame.Settings.TickCount)
+
+var lasttime = 0
+var frames = 0
+var fps = 0
 
 function draw(time){
+    curtime = time
     ctx.clearRect(0, 0, w, h);
 
     frames = frames + 1
@@ -152,10 +216,10 @@ function draw(time){
         fps = Math.round((frames/diff)*1000)
         frames = 0
     }
-    BulletMove()
+   
     DrawBullets()
-    ctx.font = "48px serif";
-    ctx.fillText(fps, 10, 50);
+    ctx.font = Scale(32)+"px serif";
+    ctx.fillText(fps, 10, Scale(30));
 
     //TheGame.Player.Rotation = TheGame.Player.Rotation + 1
     //if (TheGame.Player.Rotation >= 360){
@@ -164,24 +228,25 @@ function draw(time){
 
    //let cos = (mousex - (w/2)) / Distance(w/2,h/2, mousex, mousey)
    //TheGame.Player.Rotation = Math.acos(cos)*180/Math.PI
-
-    TheGame.Player.Rotation = Math.atan2(mousey - h/2, mousex - w/2)* 180 / Math.PI
+   
+    ctx.font = (32*screenscale)+"px serif";
+    //ctx.fillText(TheGame.Player.Rotation, 10, Scale(60));
+    //ctx.fillText(TheGame.Player.NewRotation, 10, Scale(90));
+    //ctx.fillText(TheGame.Player.OldRotation, 10, Scale(120));
+    //ctx.fillText((TheGame.Player.NewRotation - TheGame.Player.OldRotation), 10, Scale(150));
     //angledLine(ctx, w/2, h/2, w*h, 1, TheGame.Player.Rotation, "white") 
     
     ctx.translate(w/2, h/2);
 
     let rot = (TheGame.Player.Rotation - 90) * Math.PI /180
 
-    
-    
-
     ctx.rotate(rot);
-    Line(ctx, 0, 0, 0, w*h, 1, "white")
+    Line(ctx, 0, 0, 0, w*h, 1, "rgba(255,0,0,10)")
     ctx.fillStyle = "white"
-    let size = 20
-    ctx.fillRect(0 - (size/2)*screenscale, 0 - (size/2)*screenscale, size*screenscale, size*screenscale)
-    size = 10
-    ctx.fillRect(0 - (size/2)*screenscale, 10, size*screenscale, size*screenscale)
+    let size = Scale(20)
+    ctx.fillRect(0 - (size/2), 0 - (size/2), size, size)
+    size = Scale(10)
+    ctx.fillRect(0 - (size/2), Scale(10), size, size)
     ctx.resetTransform();
 
     requestAnimationFrame(draw);
