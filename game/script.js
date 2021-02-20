@@ -3,6 +3,8 @@ var mousex
 var mousey
 var w = $(window).width();
 var h = $(window).height();
+var oldw = w;
+var oldh = h;
 
 function ScreenScale(int)
 {
@@ -35,24 +37,21 @@ $(window).resize(function(){
 
 const ctx = canvas.getContext('2d')
 
+function getRandomInt(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
+
 function Distance(x,y,x1,y1){
     let dx = x1 - x;
     let dy = y1 - y;
     return Math.sqrt(dx * dx + dy * dy);
 };
 
-function roundedRect(ctx,x,y,width,height,radius){
-    ctx.beginPath();
-    ctx.moveTo(x,y+radius);
-    ctx.lineTo(x,y+height-radius);
-    ctx.quadraticCurveTo(x,y+height,x+radius,y+height);
-    ctx.lineTo(x+width-radius,y+height);
-    ctx.quadraticCurveTo(x+width,y+height,x+width,y+height-radius);
-    ctx.lineTo(x+width,y+radius);
-    ctx.quadraticCurveTo(x+width,y,x+width-radius,y);
-    ctx.lineTo(x+radius,y);
-    ctx.quadraticCurveTo(x,y,x,y+radius);
-    ctx.stroke();
+function easeInOutCubic(t, b, c, d) {
+    if ((t /= d / 2) < 1) return c / 2 * t * t * t + b;
+    return c / 2 * ((t -= 2) * t * t + 2) + b;
 }
 
 function angledLine(ctx, x, y, length, width, angle, color)
@@ -90,7 +89,9 @@ const TheGame = {
         TickCount: 60
     },
     Constants:{
-        TickHandler: null
+        TickHandler: null,
+        CurTime: 0,
+        SpawnDelay: 2
     },
     Player: {
         RotationTime: 0.5,
@@ -101,7 +102,12 @@ const TheGame = {
         NewTime: 0,
         Shot: true
     },
-    Bullets:[]
+    Bullets:[],
+    Meteors:[]
+}
+
+function CurTime(){
+    return TheGame.Constants.CurTime
 }
 
 TheGame.FireBullet = function(x,y,angle, speed = 1){
@@ -109,13 +115,29 @@ TheGame.FireBullet = function(x,y,angle, speed = 1){
         Speed: speed,
         X: x,
         Y: y,
-        Ang: angle
+        Ang: angle,
+        SpawnW: w,
+        SpawnH: h
     }
     TheGame.Bullets.push(SingleBullet)
 }
 
+
+TheGame.SpawnMeteor = function(x,y, size = 10, speed = 0.5){
+    let SingleMeteor = {
+        Speed: speed,
+        X: x,
+        Y: y,
+        Ang: Math.atan2(h/2 - y, w/2 - x)* 180 / Math.PI,
+        Size: size,
+        SpawnW: w,
+        SpawnH: h
+    }
+    TheGame.Meteors.push(SingleMeteor)
+}
+
 $( "body" ).click(function() {
-    if (curtime - TheGame.Player.NewTime > (TheGame.Player.RotationTime*1000))
+    if (CurTime() - TheGame.Player.NewTime > (TheGame.Player.RotationTime))
     {
         TheGame.Player.Shot = false
         if (TheGame.Player.WasSpinned)
@@ -125,13 +147,23 @@ $( "body" ).click(function() {
         }
         TheGame.Player.OldRotation = TheGame.Player.Rotation
         TheGame.Player.NewRotation = (Math.atan2(mousey - h/2, mousex - w/2)* 180 / Math.PI)
-        TheGame.Player.NewTime = curtime
+        TheGame.Player.NewTime = CurTime()
         //TheGame.FireBullet(w/2,h/2, TheGame.Player.Rotation, 4)
     }
 });
 
 function BulletMove(){
     for (let i = 0; i < TheGame.Bullets.length; i++) {
+        if (TheGame.Bullets[i].SpawnW != w)
+        {
+            TheGame.Bullets[i].X = TheGame.Bullets[i].X * (w / TheGame.Bullets[i].SpawnW)
+            TheGame.Bullets[i].SpawnW = w
+        }
+        if (TheGame.Bullets[i].SpawnH != h)
+        {
+            TheGame.Bullets[i].Y = TheGame.Bullets[i].Y * (h / TheGame.Bullets[i].SpawnH)
+            TheGame.Bullets[i].SpawnH = h
+        }
         if (TheGame.Bullets[i].X >= w || TheGame.Bullets[i].X <= 0)
         {
             TheGame.Bullets.splice(i, 1)
@@ -144,36 +176,92 @@ function BulletMove(){
         }
 
         let rot = TheGame.Bullets[i].Ang * Math.PI /180
-        dx = (Math.cos(rot) * TheGame.Bullets[i].Speed);
-        dy = (Math.sin(rot) * TheGame.Bullets[i].Speed)
+        dx = (Math.cos(rot) * Scale(TheGame.Bullets[i].Speed));
+        dy = (Math.sin(rot) * Scale(TheGame.Bullets[i].Speed))
         TheGame.Bullets[i].X += dx
         TheGame.Bullets[i].Y += dy
     }
 }
+function MeteorMove(){
+    for (let i = 0; i < TheGame.Meteors.length; i++) {
+        if (TheGame.Meteors[i].SpawnW != w)
+        {
+            TheGame.Meteors[i].X = TheGame.Meteors[i].X * (w / TheGame.Meteors[i].SpawnW)
+            TheGame.Meteors[i].SpawnW = w
+            TheGame.Meteors[i].Ang = Math.atan2(h/2 - TheGame.Meteors[i].Y, w/2 - TheGame.Meteors[i].X)* 180 / Math.PI
+        }
+        if (TheGame.Meteors[i].SpawnH != h)
+        {
+            TheGame.Meteors[i].Y = TheGame.Meteors[i].Y * (h / TheGame.Meteors[i].SpawnH)
+            TheGame.Meteors[i].SpawnH = h
+            TheGame.Meteors[i].Ang = Math.atan2(h/2 - TheGame.Meteors[i].Y, w/2 - TheGame.Meteors[i].X)* 180 / Math.PI
+        }
+        let deleted = false
+        if (Distance(TheGame.Meteors[i].X, TheGame.Meteors[i].Y, w/2, h/2) <= Scale(TheGame.Meteors[i].Size))
+        {
+            TheGame.Meteors.splice(i, 1)
+            continue;
+        }
 
-function DrawBullets(){
-    for (let i = 0; i < TheGame.Bullets.length; i++) {
-        ctx.translate(TheGame.Bullets[i].X, TheGame.Bullets[i].Y);
-        let rot = (TheGame.Bullets[i].Ang - 90) * Math.PI /180
-        ctx.fillStyle = "white"
-        let size = Scale(5)
-        ctx.rotate(rot);
-        Line(ctx, 0, 0, 0, 10*screenscale, 1, "white")
-        ctx.fillRect(0 - (size/2), 0 - (size/2), size, size)
-        ctx.resetTransform();
-        ctx.fillStyle = "white"
+        for (let j = 0; j < TheGame.Bullets.length; j++) {
+            if (Distance(TheGame.Meteors[i].X, TheGame.Meteors[i].Y, TheGame.Bullets[j].X, TheGame.Bullets[j].Y) <= Scale(TheGame.Meteors[i].Size))
+            {
+                deleted = true
+                TheGame.Meteors.splice(i, 1)
+                TheGame.Bullets.splice(j, 1)
+                break;
+            }
+        }
+        if (deleted){
+            continue;
+        }
+
+        let rot = TheGame.Meteors[i].Ang * Math.PI /180
+        dx = (Math.cos(rot) * Scale(TheGame.Meteors[i].Speed));
+        dy = (Math.sin(rot) * Scale(TheGame.Meteors[i].Speed))
+        TheGame.Meteors[i].X += dx
+        TheGame.Meteors[i].Y += dy
+    }
+}
+var lastspawned = CurTime()
+function MeteorSpawner(){
+    if (CurTime() - lastspawned >= TheGame.Constants.SpawnDelay){
+        let size = getRandomInt(20,80)
+        let XorY = getRandomInt(0,1)
+        let PosX
+        let PosY
+        if (XorY){
+            PosX = getRandomInt(0,1)
+            if (PosX)
+            {
+                PosX = w + size
+            }else{
+                PosX = size * -1
+            }
+            PosY = getRandomInt(0,h)
+        }else{
+            if (PosY)
+            {
+                PosY = h + size
+            }else{
+                PosY = size * -1
+            }
+            PosX = getRandomInt(0,w)
+        }
+          
+        TheGame.SpawnMeteor(PosX,PosY,size, 1)
+        lastspawned = CurTime()
     }
 }
 
-function easeInOutCubic(t, b, c, d) {
-    if ((t /= d / 2) < 1) return c / 2 * t * t * t + b;
-    return c / 2 * ((t -= 2) * t * t + 2) + b;
-}
-
 function Tick(){
-    BulletMove()
+    TheGame.Constants.CurTime += 1/TheGame.Settings.TickCount
 
-    if (curtime - TheGame.Player.NewTime <= (TheGame.Player.RotationTime*1000))
+    BulletMove()
+    MeteorMove()
+    MeteorSpawner()
+
+    if (CurTime() - TheGame.Player.NewTime <= (TheGame.Player.RotationTime))
     {
         let add = (TheGame.Player.NewRotation - TheGame.Player.OldRotation)
         if (add >= 180 || add <= -180)
@@ -182,13 +270,13 @@ function Tick(){
             add = ((180 - Math.abs(TheGame.Player.OldRotation)) + (180 - Math.abs(TheGame.Player.NewRotation)))
             //console.log(add)
             if (TheGame.Player.NewRotation > TheGame.Player.OldRotation){
-                TheGame.Player.Rotation = easeInOutCubic((curtime - TheGame.Player.NewTime)/(TheGame.Player.RotationTime*1000), TheGame.Player.OldRotation, add*-1, 1);
+                TheGame.Player.Rotation = easeInOutCubic((CurTime() - TheGame.Player.NewTime)/(TheGame.Player.RotationTime), TheGame.Player.OldRotation, add*-1, 1);
             }else{
-                TheGame.Player.Rotation = easeInOutCubic((curtime - TheGame.Player.NewTime)/(TheGame.Player.RotationTime*1000), TheGame.Player.OldRotation, add, 1);
+                TheGame.Player.Rotation = easeInOutCubic((CurTime() - TheGame.Player.NewTime)/(TheGame.Player.RotationTime), TheGame.Player.OldRotation, add, 1);
             }
             
         }else{
-            TheGame.Player.Rotation = easeInOutCubic((curtime - TheGame.Player.NewTime)/(TheGame.Player.RotationTime*1000), TheGame.Player.OldRotation, add, 1);
+            TheGame.Player.Rotation = easeInOutCubic((CurTime() - TheGame.Player.NewTime)/(TheGame.Player.RotationTime), TheGame.Player.OldRotation, add, 1);
         }
     }else{
         if (!TheGame.Player.Shot){
@@ -200,12 +288,49 @@ function Tick(){
 }
 TheGame.Constants.TickHandler = setInterval(Tick, 1000 / TheGame.Settings.TickCount)
 
+function DrawBullets(){
+    for (let i = 0; i < TheGame.Bullets.length; i++) {
+        ctx.translate(TheGame.Bullets[i].X, TheGame.Bullets[i].Y);
+        let rot = (TheGame.Bullets[i].Ang - 90) * Math.PI /180
+        ctx.fillStyle = "white"
+        let size = Scale(5)
+        ctx.rotate(rot);
+        Line(ctx, 0, 0, 0, Scale(10), 1, "white")
+        ctx.fillRect(0 - (size/2), 0 - (size/2), size, size)
+        ctx.resetTransform();
+        ctx.fillStyle = "white"
+    }
+}
+
+function DrawMeteors(){
+    for (let i = 0; i < TheGame.Meteors.length; i++) {
+        ctx.translate(TheGame.Meteors[i].X, TheGame.Meteors[i].Y);
+
+        let rot = (TheGame.Meteors[i].Ang - 90) * Math.PI /180
+        
+        ctx.rotate(rot);
+
+        Line(ctx, 0, 0, 0, Scale(10), 1, "white")
+        
+        ctx.fillStyle = "gray"
+        ctx.beginPath();
+        ctx.arc(0, 0, Scale(TheGame.Meteors[i].Size), 0, 2 * Math.PI, false);
+        ctx.fill();
+        ctx.lineWidth = Scale(3);
+        ctx.strokeStyle = '#4a4a4a';
+        ctx.stroke();
+
+        ctx.resetTransform();
+        
+        ctx.fillStyle = "white"
+    }
+}
+
 var lasttime = 0
 var frames = 0
 var fps = 0
 
 function draw(time){
-    curtime = time
     ctx.clearRect(0, 0, w, h);
 
     frames = frames + 1
@@ -218,8 +343,7 @@ function draw(time){
     }
    
     DrawBullets()
-    ctx.font = Scale(32)+"px serif";
-    ctx.fillText(fps, 10, Scale(30));
+    DrawMeteors()
 
     //TheGame.Player.Rotation = TheGame.Player.Rotation + 1
     //if (TheGame.Player.Rotation >= 360){
@@ -248,6 +372,9 @@ function draw(time){
     size = Scale(10)
     ctx.fillRect(0 - (size/2), Scale(10), size, size)
     ctx.resetTransform();
+
+    ctx.font = Scale(32)+"px serif";
+    ctx.fillText(fps, 10, Scale(30));
 
     requestAnimationFrame(draw);
 }
