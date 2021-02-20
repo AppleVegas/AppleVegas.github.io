@@ -280,7 +280,7 @@ function MeteorSpawner(){
             PosX = getRandomInt(0,w)
         }
           
-        TheGame.SpawnMeteor(PosX,PosY,size, getRandomInt(1, 4))
+        TheGame.SpawnMeteor(PosX,PosY,size, getRandomInt(1, 6))
         lastspawned = CurTime()
     }
 }
