@@ -452,18 +452,18 @@ function draw(time){
         ctx.fillStyle = "rgba(255,100,100,1)"
         ctx.font = Scale(40)+"px NafteraBoldItalic";
         ctx.textAlign = "center"
-        ctx.lineWidth = 4;
+        ctx.lineWidth = Scale(4);
         ctx.strokeStyle = "black"
         ctx.strokeText("You Died!", 0, 0);
         ctx.fillText("You Died!", 0, 0);
         ctx.fillStyle = "rgba(100,255,100,1)"
         ctx.font = Scale(30)+"px NafteraBoldItalic";
-        ctx.lineWidth = 4;
+        ctx.lineWidth = Scale(4);
         ctx.strokeText("Score: "+TheGame.Player.Score,0, Scale(40));
         ctx.fillText("Score: "+TheGame.Player.Score, 0, Scale(40));
         ctx.fillStyle = "rgba(255,255,255,1)"
         ctx.font = Scale(30)+"px NafteraBoldItalic";
-        ctx.lineWidth = 4;
+        ctx.lineWidth = Scale(4);
         ctx.strokeText("Press anywhere or reload page to retry",0, Scale(80));
         ctx.fillText("Press anywhere or reload page to retry", 0, Scale(80));
         ctx.restore()
