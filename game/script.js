@@ -6,6 +6,12 @@ var h = $(window).height();
 var oldw = w;
 var oldh = h;
 
+var deathsound = new Audio('death.wav');
+var shootsound = new Audio('shoot.wav');
+var hitsound = new Audio('hit.wav');
+var startsound = new Audio('start.wav');
+var dmgsound = new Audio('dmg.wav');
+
 function ScreenScale(int)
 {
     return w/int
@@ -91,7 +97,10 @@ const TheGame = {
     Constants:{
         TickHandler: null,
         CurTime: 0,
-        SpawnDelay: 2
+        SpawnDelay: 2, 
+        Started: false,
+        GameOver: false,
+        HurtRed: 0
     },
     Player: {
         RotationTime: 0.5,
@@ -100,7 +109,9 @@ const TheGame = {
         NewRotation: 0,
         WasSpinned: false,
         NewTime: 0,
-        Shot: true
+        Shot: true,
+        Score: 0,
+        Health: 100,
     },
     Bullets:[],
     Meteors:[]
@@ -137,6 +148,15 @@ TheGame.SpawnMeteor = function(x,y, size = 10, speed = 0.5){
 }
 
 $( "body" ).click(function() {
+    if (TheGame.Constants.GameOver){
+        document.location.reload()
+        return;
+    }
+    if (!TheGame.Constants.Started){
+        TheGame.Constants.Started = true
+        startsound.play()
+        return;
+    }
     if (CurTime() - TheGame.Player.NewTime > (TheGame.Player.RotationTime))
     {
         TheGame.Player.Shot = false
@@ -199,6 +219,15 @@ function MeteorMove(){
         let deleted = false
         if (Distance(TheGame.Meteors[i].X, TheGame.Meteors[i].Y, w/2, h/2) <= Scale(TheGame.Meteors[i].Size))
         {
+            
+            TheGame.Constants.HurtRed = 150
+            let resulthp = TheGame.Player.Health - Math.round(TheGame.Meteors[i].Size/4)
+            if (resulthp > 0){
+                TheGame.Player.Health = resulthp
+                dmgsound.play()
+            }else{
+                TheGame.Player.Health = 0
+            }
             TheGame.Meteors.splice(i, 1)
             continue;
         }
@@ -206,9 +235,11 @@ function MeteorMove(){
         for (let j = 0; j < TheGame.Bullets.length; j++) {
             if (Distance(TheGame.Meteors[i].X, TheGame.Meteors[i].Y, TheGame.Bullets[j].X, TheGame.Bullets[j].Y) <= Scale(TheGame.Meteors[i].Size))
             {
+                TheGame.Player.Score += Math.round(TheGame.Meteors[i].Size/4)
                 deleted = true
                 TheGame.Meteors.splice(i, 1)
                 TheGame.Bullets.splice(j, 1)
+                hitsound.play()
                 break;
             }
         }
@@ -249,17 +280,27 @@ function MeteorSpawner(){
             PosX = getRandomInt(0,w)
         }
           
-        TheGame.SpawnMeteor(PosX,PosY,size, 1)
+        TheGame.SpawnMeteor(PosX,PosY,size, getRandomInt(1, 4))
         lastspawned = CurTime()
     }
 }
 
 function Tick(){
+    if (!TheGame.Constants.Started || TheGame.Constants.GameOver){return}
+    if (TheGame.Player.Health == 0){
+        TheGame.Constants.GameOver = true
+        deathsound.play()
+        return
+    }
     TheGame.Constants.CurTime += 1/TheGame.Settings.TickCount
 
     BulletMove()
     MeteorMove()
     MeteorSpawner()
+    if (TheGame.Constants.HurtRed > 0)
+    {
+        TheGame.Constants.HurtRed -= 2
+    }
 
     if (CurTime() - TheGame.Player.NewTime <= (TheGame.Player.RotationTime))
     {
@@ -282,6 +323,7 @@ function Tick(){
         if (!TheGame.Player.Shot){
             TheGame.Player.Shot = true
             TheGame.FireBullet(w/2,h/2, TheGame.Player.Rotation, 4)
+            shootsound.play()
         }
     }
 
@@ -331,8 +373,8 @@ var frames = 0
 var fps = 0
 
 function draw(time){
+    
     ctx.clearRect(0, 0, w, h);
-
     frames = frames + 1
     let diff = time - lasttime
     if (diff >= 100)
@@ -353,7 +395,7 @@ function draw(time){
    //let cos = (mousex - (w/2)) / Distance(w/2,h/2, mousex, mousey)
    //TheGame.Player.Rotation = Math.acos(cos)*180/Math.PI
    
-    ctx.font = (32*screenscale)+"px serif";
+    ctx.font = Scale(32)+"px NafteraBoldItalic";
     //ctx.fillText(TheGame.Player.Rotation, 10, Scale(60));
     //ctx.fillText(TheGame.Player.NewRotation, 10, Scale(90));
     //ctx.fillText(TheGame.Player.OldRotation, 10, Scale(120));
@@ -365,7 +407,7 @@ function draw(time){
     let rot = (TheGame.Player.Rotation - 90) * Math.PI /180
 
     ctx.rotate(rot);
-    Line(ctx, 0, 0, 0, w*h, 1, "rgba(255,0,0,10)")
+    Line(ctx, 0, 0, 0, w*h, 1, "rgba(255,0,0,0.5)")
     ctx.fillStyle = "white"
     let size = Scale(20)
     ctx.fillRect(0 - (size/2), 0 - (size/2), size, size)
@@ -373,9 +415,59 @@ function draw(time){
     ctx.fillRect(0 - (size/2), Scale(10), size, size)
     ctx.resetTransform();
 
-    ctx.font = Scale(32)+"px serif";
-    ctx.fillText(fps, 10, Scale(30));
+    ctx.font = Scale(32)+"px NafteraBoldItalic";
+    ctx.fillText(fps + " FPS", 10, Scale(30));
 
+    ctx.fillStyle = "rgba(255,0,0,"+TheGame.Constants.HurtRed/255+")"
+    ctx.fillRect(0, 0, w, h)
+    if (!TheGame.Constants.GameOver){
+        if (!TheGame.Constants.Started){
+            ctx.save();
+            ctx.translate(w/2, h*0.7);
+            let rot = Math.sin(time/720) * Math.PI /50
+            ctx.rotate(rot);
+            ctx.fillStyle = "white"
+            ctx.font = Scale(40)+"px NafteraBoldItalic";
+            ctx.textAlign = "center"
+            ctx.fillText("Press anywhere to start", 0, 0);
+            ctx.restore()
+        }else{
+            ctx.save();
+            ctx.translate(w/2, h*0.8);
+            let rot = Math.sin(time/720) * Math.PI /50
+            ctx.rotate(rot);
+            ctx.textAlign = "center"
+            ctx.fillStyle = "rgba(100,255,100,1)"
+            ctx.font = Scale(20)+"px NafteraBoldItalic";
+            ctx.fillText("Score: "+TheGame.Player.Score, 0, 0);
+            ctx.fillStyle = "rgba(255,100,100,1)"
+            ctx.fillText("Health: "+TheGame.Player.Health, 0, Scale(20));
+            ctx.restore();
+        }
+    }else{
+        ctx.save();
+        ctx.translate(w/2, h/2);
+        let rot = Math.sin(time/720) * Math.PI /50
+        ctx.rotate(rot);
+        ctx.fillStyle = "rgba(255,100,100,1)"
+        ctx.font = Scale(40)+"px NafteraBoldItalic";
+        ctx.textAlign = "center"
+        ctx.lineWidth = 4;
+        ctx.strokeStyle = "black"
+        ctx.strokeText("You Died!", 0, 0);
+        ctx.fillText("You Died!", 0, 0);
+        ctx.fillStyle = "rgba(100,255,100,1)"
+        ctx.font = Scale(30)+"px NafteraBoldItalic";
+        ctx.lineWidth = 4;
+        ctx.strokeText("Score: "+TheGame.Player.Score,0, Scale(40));
+        ctx.fillText("Score: "+TheGame.Player.Score, 0, Scale(40));
+        ctx.fillStyle = "rgba(255,255,255,1)"
+        ctx.font = Scale(30)+"px NafteraBoldItalic";
+        ctx.lineWidth = 4;
+        ctx.strokeText("Press anywhere or reload page to retry",0, Scale(80));
+        ctx.fillText("Press anywhere or reload page to retry", 0, Scale(80));
+        ctx.restore()
+    }
     requestAnimationFrame(draw);
 }
 
