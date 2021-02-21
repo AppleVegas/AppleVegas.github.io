@@ -5,6 +5,11 @@ var w = $(window).width();
 var h = $(window).height();
 var oldw = w;
 var oldh = h;
+var mode = 1
+
+if (w < h){
+    mode = 0
+}
 
 var deathsound = new Audio('death.wav');
 var shootsound = new Audio('shoot.wav');
@@ -17,7 +22,19 @@ function ScreenScale(int)
     return w/int
 }
 
-var screenscale = ScreenScale(1366)
+function ScreenScaleH(int)
+{
+    return w/int
+}
+
+var screenscale
+
+if (mode == 1)
+{
+    screenscale = ScreenScale(1366)
+}else{
+    screenscale = ScreenScaleH(657)
+}
 
 function Scale(num)
 {
@@ -38,6 +55,22 @@ changeResolution(canvas, w, h)
 $(window).resize(function(){
     w = $(window).width();
     h = $(window).height();
+
+    if (mode == 1 && w < h){
+        document.location.reload()
+    }
+
+    if (mode == 0 && w > h){
+        document.location.reload()
+    }
+
+    if (mode == 1)
+    {
+        screenscale = ScreenScale(1366)
+    }else{
+        screenscale = ScreenScaleH(657)
+    }
+
     changeResolution(canvas, w, h)
 });
 
@@ -265,17 +298,17 @@ function MeteorSpawner(){
             PosX = getRandomInt(0,1)
             if (PosX)
             {
-                PosX = w + size
+                PosX = w + Scale(size)
             }else{
-                PosX = size * -1
+                PosX = Scale(size) * -1
             }
             PosY = getRandomInt(0,h)
         }else{
             if (PosY)
             {
-                PosY = h + size
+                PosY = h + Scale(size)
             }else{
-                PosY = size * -1
+                PosY = Scale(size) * -1
             }
             PosX = getRandomInt(0,w)
         }
@@ -407,7 +440,7 @@ function draw(time){
     let rot = (TheGame.Player.Rotation - 90) * Math.PI /180
 
     ctx.rotate(rot);
-    Line(ctx, 0, 0, 0, w*h, 1, "rgba(255,0,0,0.5)")
+    Line(ctx, 0, 0, 0, w*h, Scale(1), "rgba(255,0,0,0.5)")
     ctx.fillStyle = "white"
     let size = Scale(20)
     ctx.fillRect(0 - (size/2), 0 - (size/2), size, size)
@@ -416,7 +449,7 @@ function draw(time){
     ctx.resetTransform();
 
     ctx.font = Scale(32)+"px NafteraBoldItalic";
-    ctx.fillText(fps + " FPS", 10, Scale(30));
+    ctx.fillText(fps + " FPS", Scale(10), Scale(30));
 
     ctx.fillStyle = "rgba(255,0,0,"+TheGame.Constants.HurtRed/255+")"
     ctx.fillRect(0, 0, w, h)
