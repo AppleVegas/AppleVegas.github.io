@@ -85,7 +85,7 @@ function getRandomInt(min, max) {
 function Distance(x,y,x1,y1){
     let dx = x1 - x;
     let dy = y1 - y;
-    return Math.sqrt(dx * dx + dy * dy);
+    return (dx * dx + dy * dy);
 };
 
 function easeInOutCubic(t, b, c, d) {
@@ -118,10 +118,10 @@ function Line(ctx, x, y, x2, y2, width, color)
     ctx.strokeStyle = "white"
 }
 
-$("body").mousemove(function(e) {
-    mousex = e.pageX;
-    mousey = e.pageY;
-})
+//$("body").mousemove(function(e) {
+//    mousex = e.pageX;
+//    mousey = e.pageY;
+//})
 
 const TheGame = {
     Settings:{
@@ -180,7 +180,7 @@ TheGame.SpawnMeteor = function(x,y, size = 10, speed = 0.5){
     TheGame.Meteors.push(SingleMeteor)
 }
 
-$( "body" ).click(function() {
+function handlepress(){
     if (TheGame.Constants.GameOver){
         document.location.reload()
         return;
@@ -203,7 +203,26 @@ $( "body" ).click(function() {
         TheGame.Player.NewTime = CurTime()
         //TheGame.FireBullet(w/2,h/2, TheGame.Player.Rotation, 4)
     }
-});
+}
+
+//$( "body" ).click(function() {
+//    handlepress()
+//});
+
+canvas.addEventListener('touchstart', function(e) {
+    let touch = e.originalEvent.touches[0];
+    mousex = touch.pageX;
+    mousey = touch.pageY;
+
+    handlepress()
+})
+
+canvas.addEventListener('mousedown', function(e) {
+    mousex = e.clientX;
+    mousey = e.clientY;
+
+    handlepress()
+})
 
 function BulletMove(){
     for (let i = 0; i < TheGame.Bullets.length; i++) {
@@ -229,14 +248,17 @@ function BulletMove(){
         }
 
         let rot = TheGame.Bullets[i].Ang * Math.PI /180
-        dx = (Math.cos(rot) * Scale(TheGame.Bullets[i].Speed));
-        dy = (Math.sin(rot) * Scale(TheGame.Bullets[i].Speed))
+        let bulletspeed = Scale(TheGame.Bullets[i].Speed)
+        dx = (Math.cos(rot) * bulletspeed);
+        dy = (Math.sin(rot) * bulletspeed)
         TheGame.Bullets[i].X += dx
         TheGame.Bullets[i].Y += dy
     }
 }
 function MeteorMove(){
     for (let i = 0; i < TheGame.Meteors.length; i++) {
+        let scale = Scale(TheGame.Meteors[i].Size)
+        let scaletopow = scale*scale
         if (TheGame.Meteors[i].SpawnW != w)
         {
             TheGame.Meteors[i].X = TheGame.Meteors[i].X * (w / TheGame.Meteors[i].SpawnW)
@@ -250,7 +272,7 @@ function MeteorMove(){
             TheGame.Meteors[i].Ang = Math.atan2(h/2 - TheGame.Meteors[i].Y, w/2 - TheGame.Meteors[i].X)* 180 / Math.PI
         }
         let deleted = false
-        if (Distance(TheGame.Meteors[i].X, TheGame.Meteors[i].Y, w/2, h/2) <= Scale(TheGame.Meteors[i].Size))
+        if (Distance(TheGame.Meteors[i].X, TheGame.Meteors[i].Y, w/2, h/2) <= scaletopow)
         {
             
             TheGame.Constants.HurtRed = 150
@@ -266,7 +288,7 @@ function MeteorMove(){
         }
 
         for (let j = 0; j < TheGame.Bullets.length; j++) {
-            if (Distance(TheGame.Meteors[i].X, TheGame.Meteors[i].Y, TheGame.Bullets[j].X, TheGame.Bullets[j].Y) <= Scale(TheGame.Meteors[i].Size))
+            if (Distance(TheGame.Meteors[i].X, TheGame.Meteors[i].Y, TheGame.Bullets[j].X, TheGame.Bullets[j].Y) <= scaletopow)
             {
                 TheGame.Player.Score += Math.round(TheGame.Meteors[i].Size/4)
                 deleted = true
@@ -281,8 +303,9 @@ function MeteorMove(){
         }
 
         let rot = TheGame.Meteors[i].Ang * Math.PI /180
-        dx = (Math.cos(rot) * Scale(TheGame.Meteors[i].Speed));
-        dy = (Math.sin(rot) * Scale(TheGame.Meteors[i].Speed))
+        let meteorspeed = Scale(TheGame.Meteors[i].Speed)
+        dx = (Math.cos(rot) * meteorspeed);
+        dy = (Math.sin(rot) * meteorspeed)
         TheGame.Meteors[i].X += dx
         TheGame.Meteors[i].Y += dy
     }
