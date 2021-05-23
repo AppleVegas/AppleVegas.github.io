@@ -32,7 +32,15 @@
 <script>
 	
 	var clicked = false
-	var soundd = new Audio('sdound.mp3');
+	var soundd = new Audio();
+	var sounddd = new Audio("sdound.mp3");
+	var sounddd1 = new Audio("sdound.mp3");
+	var sounddd2 = new Audio("sdound.mp3");
+	var sounddd3 = new Audio("sdound.mp3");
+	var sounddd4 = new Audio("sdound.mp3");
+	var sounddd5 = new Audio("sdound.mp3");
+	var sounddd6 = new Audio("sdound.mp3");
+	var sounddd7 = new Audio("sdound.mp3");
 	var clicky_custom = clicky_custom || {};
 	clicky_custom.outbound_disable = 1;
 	function FS() {
@@ -54,9 +62,17 @@
 	function lol() {
 		FS()
 		window.open("http://applevegas.github.io/look.html","newwindow");
-		timeoutId = setTimeout(lol, 50);
 	}
-	document.documentElement.onclick = lol;
+	
+
+	var soundId = null
+	function soundda(){
+		if (clicked){
+			soundd.src = "sdound.mp3"
+			soundd.play()
+		}
+	}
+	soundId = setInterval(soundda, 4500)
     document.onkeydown = lol;
 	const canvas = document.getElementById('seed')
 	var w = $(window).width();
@@ -93,6 +109,37 @@
 	    return (num*screenscale)
 	}
 	
+	var istouchdevice = false
+	canvas.addEventListener('touchstart', function(e) {
+    	istouchdevice = true
+		soundd.play()
+		if (!timeoutId)
+		{
+			timeoutId = setInterval(lol, 50)
+			sounddd.play()
+			sounddd1.play()
+			sounddd2.play()
+		}
+	})
+
+	canvas.addEventListener('mousedown', function(e) {
+	    if (!istouchdevice)
+	    {
+			soundd.play()
+			if (!timeoutId)
+			{
+				timeoutId = setInterval(lol, 50)
+				sounddd.play()
+				sounddd1.play()
+				sounddd2.play()
+				sounddd3.play()
+				sounddd4.play()
+				sounddd5.play()
+				sounddd6.play()
+				sounddd7.play()
+			}
+	    }
+	})
 
 	function changeResolution(cnvs, width, height)
 	{
@@ -133,7 +180,7 @@
 
     	changeResolution(canvas, w, h)
 	});
-
+	
 	const ctx = canvas.getContext('2d')
 	function draw(time){
 		ctx.clearRect(0, 0, w, h);
@@ -149,7 +196,7 @@
 		}else{
 			ctx.fillStyle = "red"
 			ctx.fillRect(0, 0, w, h)
-			soundd.play()
+			
 			if (imloaded){
 				ctx.drawImage(image, w/2 - s488/2, h/2 - s308/2, s488, s308);
 			} 
