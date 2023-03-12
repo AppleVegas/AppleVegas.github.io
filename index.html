@@ -5,6 +5,9 @@
 		<title>AppleVegas</title>
 		<style>
 			@font-face { font-family: SFUI; src: url('SFUI.ttf'); }
+			html {
+				overflow: hidden;
+			}
 			body {
 				font-family: "SFUI"; 
 				text-align: center; 
@@ -13,6 +16,7 @@
 				background-size: cover; 
 				background-repeat: no-repeat;
 				margin-top: 5%;
+				
 			}
 			img {border-radius: 50%; box-shadow: black 0px 0px 25px;}
 			h1 {font-size:2em; text-decoration: none;}
@@ -66,8 +70,7 @@
 			if (IsMobile()){
 				document.body.style.transform = "scale(2)";
 				document.body.style.transform.origin = "0 0";
-				document.body.style.margin = document.getElementById("avatar").clientHeight/window.screen.height*110 + "%";
-				console.log(document.getElementById("avatar").clientHeight, window.screen.height);
+				document.body.style.marginTop = document.getElementById("avatar").clientHeight/window.screen.height*200 + "%";
 			}
 		} 
 		window.addEventListener("orientationchange", (event) => {
